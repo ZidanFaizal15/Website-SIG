@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tampilan Peta - Web GIS</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Library untuk membaca CSV -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+    <style>
+        
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Web GIS</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="data.html">Data Penelitian</a></li>
+        <li><a class="active" href="peta.html">Tampilan Peta</a></li>
+        <li><a href="about.html">Profile</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Tampilan Peta & Tabel</h1>
+    </div>
+</section>
+
+<!-- LAYOUT DUA KOLON -->
+<div class="map-layout">
+
+    <!-- KIRI: Dropdown -->
+    <div class="sidebar">
+        <div class="dropdown-area">
+            <label for="petaSelect"><strong>Pilih Data:</strong></label>
+            <select id="petaSelect" onchange="gantiPeta()">
+                <option value="Jumlah Penduduk">Jumlah Penduduk</option>
+                <option value="Klinik Pratama">Klinik Pratama</option>
+                <option value="Posyandu">Posyandu</option>
+                <option value="Puskesmas non Rawat Inap">Puskesmas non Rawat Inap</option>
+                <option value="Puskesmas Rawat Inap">Puskesmas Rawat Inap</option>
+                <option value="RS Khusus">RS Khusus</option>
+                <option value="RS Umum">RS Umum</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- KANAN: Peta + Legend -->
+    <div class="map-area">
+        <iframe id="mapFrame" class="map-container" src="peta/Jumlah Penduduk/index.html"></iframe>
+
+        <div class="legend">
+            <div class="legend-title">Keterangan Kelas</div>
+            <div class="legend-item"><div class="legend-color" style="background: #ffffb2;"></div><span>Rendah</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #fecc5c;"></div><span>Cukup Rendah</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #fd8d3c;"></div><span>Sedang</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #f03b20;"></div><span>Cukup Tinggi</span></div>
+            <div class="legend-item"><div class="legend-color" style="background: #bd0026;"></div><span>Tinggi</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- TABEL DATA -->
+<div class="container">
+    <div class="table-title">Tabel Data Jumlah Penduduk dan Jumlah Fasilitas Kesehatan</div>
+    <table id="dataTable"></table>
+</div>
+
+<!-- SCRIPT -->
+<script>
+function gantiPeta() {
+    const pilih = document.getElementById("petaSelect").value;
+    document.getElementById("mapFrame").src = "peta/" + pilih + "/index.html";
+}
+
+Papa.parse("data/SHP Gis.csv", {
+    download: true,
+    header: true,
+    complete: function(results) {
+        const data = results.data;
+        const table = document.getElementById("dataTable");
+        if (data.length === 0) return;
+
+        let headerRow = "<tr>";
+        Object.keys(data[0]).forEach(col => headerRow += "<th>"+col+"</th>");
+        headerRow += "</tr>";
+        table.innerHTML = headerRow;
+
+        data.forEach(row => {
+            let rowHTML = "<tr>";
+            Object.values(row).forEach(val => rowHTML += "<td>"+val+"</td>");
+            rowHTML += "</tr>";
+            table.innerHTML += rowHTML;
+        });
+    }
+});
+</script>
+</html>

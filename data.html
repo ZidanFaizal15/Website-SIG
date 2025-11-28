@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Web GIS</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+        details {
+            margin-bottom: 15px;
+            border:none;
+            border-radius: 5px;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        summary {
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        #dataTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #dataTable th,
+        #dataTable td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .hero h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .hero p {
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Web GIS</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                 <li><a href="data.html" class="active">Data Penelitian</a></li>
+                <li><a href="peta.html">Tampilan Peta</a></li>
+                <li><a href="about.html">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+    <div class="hero-content">
+        <h1>Hasil Penelitian</h1>
+    </div>
+    </section>
+
+<section class="content">
+    <div class="section-box">
+        <h1 style="font-style: italic;">Analisis hubungan antara kepadatan penduduk dan ketersediaan fasilitas kesehatan menggunakan Sistem Informasi Geografis (SIG).</h1>
+    </div>
+
+    <div class="section-box">
+        <h1>Latar Belakang</h1>
+        <p>Ketersediaan fasilitas kesehatan yang merata merupakan salah satu aspek penting...</p>
+        <p>Kecamatan dengan jumlah dan kepadatan penduduk yang tinggi memiliki kebutuhan layanan...</p>
+        <p>Untuk menjawab permasalahan tersebut, Sistem Informasi Geografis (SIG) digunakan...</p>
+    </div>
+
+    <div class="section-box">
+        <h1>Tujuan Penelitian</h1>
+        <p><strong>1. Menganalisis persebaran fasilitas kesehatan...</strong></p>
+        <p><strong>2. Membandingkan jumlah fasilitas kesehatan...</strong></p>
+        <p><strong>3. Mengidentifikasi kecamatan yang memerlukan prioritas...</strong></p>
+    </div>
+
+    <div class="section-box">
+        <h1>Metode Analisis</h1>
+        <p>Penelitian ini menggunakan pendekatan deskriptif kuantitatif...</p>
+        <p><strong>1. Pengolahan Data</strong><br>Data fasilitas kesehatan...</p>
+        <p><strong>2. Analisis Spasial Menggunakan SIG</strong><br>Data kemudian dipetakan...</p>
+        <p><strong>3. Interpretasi Hasil</strong><br>Analisis spasial diinterpretasikan...</p>
+    </div>
+
+    <div class="section-box">
+        <h1>Hasil Penelitian</h1>
+        <p>Berdasarkan analisis, seluruh kecamatan di Kota Semarang...</p>
+        <p>Sebaliknya, kecamatan seperti Gunung Pati...</p>
+        <p>Kesimpulan utama meliputi:<br>
+        1. Persebaran rumah sakit masih belum merata...<br>
+        2. Wilayah utara dan barat memerlukan prioritas...<br>
+        3. Fasilitas dasar seperti posyandu...<br>
+        4. Kecamatan dengan jumlah penduduk lebih dari 100 ribu...</p>
+    </div>
+
+    <div class="section-box">
+        <h1>Data Yang Digunakan</h1>
+        <p>Data yang digunakan dalam penelitian ini diperoleh dari sumber resmi BPS Kota Semarang...</p>
+        <ul>
+            <li><a href="#" target="_blank">Jumlah Rumah Sakit, Puskesmas...</a></li>
+            <li><a href="#" target="_blank">Jumlah Penduduk, Kepadatan...</a></li>
+        </ul>
+    </div>
+</section>
+
+
+    <footer>
+    </footer>
+
+    <script>
+        // Muat CSV ke tabel
+        function loadCSV() {
+            Papa.parse("data/SHP Gis.csv", {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data;
+                    const table = document.getElementById("dataTable");
+
+                    if (data.length === 0) return;
+
+                    // Buat header tabel
+                    let headerRow = "<tr>";
+                    Object.keys(data[0]).forEach(col => {
+                        headerRow += "<th>" + col + "</th>";
+                    });
+                    headerRow += "</tr>";
+                    table.innerHTML = headerRow;
+
+                    // Isi tabel
+                    data.forEach(row => {
+                        let rowHTML = "<tr>";
+                        Object.values(row).forEach(val => {
+                            rowHTML += "<td>" + val + "</td>";
+                        });
+                        rowHTML += "</tr>";
+                        table.innerHTML += rowHTML;
+                    });
+                }
+            });
+        }
+
+        // Load tabel saat halaman dibuka
+        loadCSV();
+    </script>
+</body>
+</html>

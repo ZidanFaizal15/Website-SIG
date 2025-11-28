@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Web GIS</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+        /* ===== Hero Homepage Full Screen ===== */
+        .hero-home {
+            position: relative;
+            height: 100vh; /* tinggi sama dengan viewport */
+            width: 100%;
+            background-image: url('images/hero_banner.png'); /* ganti dengan background yang diinginkan */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-home .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* overlay gelap */
+            z-index: 1;
+        }
+
+        .hero-home .hero-content {
+            position: relative;
+            z-index: 2; /* konten di atas overlay */
+            max-width: 800px;
+        }
+
+        .hero-home h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .hero-home p {
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        /* Tombol hero */
+        .menu-buttons a.cta-btn {
+            display: inline-block;
+            width: 220px; /* semua tombol sama panjang */
+            text-align: center;
+            padding: 12px 0;
+            background-color: #0077cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 5px 0;
+            transition: background-color 0.3s;
+        }
+
+        .menu-buttons a.cta-btn:hover {
+            background-color: #005fa3;
+        }
+
+        /* Welcome text biasa */
+        .welcome-text {
+            text-align: center;
+            max-width: 800px;
+            margin: 30px auto;
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Tabel CSV */
+        #dataTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #dataTable th,
+        #dataTable td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        details {
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        summary {
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .hero-home h1 {
+                font-size: 2em;
+            }
+
+            .hero-home p {
+                font-size: 1em;
+            }
+
+            .menu-buttons a.cta-btn {
+                width: 70%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Web GIS</div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="data.html">Data Penelitian</a></li>
+                <li><a href="peta.html">Tampilan Peta</a></li>
+                <li><a href="about.html">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Homepage -->
+    <section class="hero hero-home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Selamat Datang</h1>
+            <p>Selamat datang di website penelitian saya mengenai ketersediaan fasilitas kesehatan di setiap kecamatan di Semarang.</p>
+            <div class="menu-buttons">
+                <a href="peta.html" class="cta-btn">Lihat Peta</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <p>Visualisasi peta dan tabel data lengkap dapat diakses melalui halaman <a href="peta.html">Tampilan Peta</a>.<br>
+            Laporan penelitian dapat diakses melalui halaman <a href="data.html">Hasil Penelitian.</a>
+        </p>
+    </section>
+
+    <footer>
+    </footer>
+
+    <script>
+        // Muat CSV ke tabel
+        function loadCSV() {
+            Papa.parse("data/SHP Gis.csv", {
+                download: true,
+                header: true,
+                complete: function (results) {
+                    const data = results.data;
+                    const table = document.getElementById("dataTable");
+
+                    if (data.length === 0) return;
+
+                    // Buat header tabel
+                    let headerRow = "<tr>";
+                    Object.keys(data[0]).forEach(col => {
+                        headerRow += "<th>" + col + "</th>";
+                    });
+                    headerRow += "</tr>";
+                    table.innerHTML = headerRow;
+
+                    // Isi tabel
+                    data.forEach(row => {
+                        let rowHTML = "<tr>";
+                        Object.values(row).forEach(val => {
+                            rowHTML += "<td>" + val + "</td>";
+                        });
+                        rowHTML += "</tr>";
+                        table.innerHTML += rowHTML;
+                    });
+                }
+            });
+        }
+
+        // Load tabel saat halaman dibuka
+        loadCSV();
+    </script>
+</body>
+</html>
