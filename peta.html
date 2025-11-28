@@ -11,7 +11,42 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
     <style>
-        
+    .hero {
+        position: relative;
+        height: 350px; /* Tidak Fullscreen */
+        width: 100%;
+        background-image: url('images/hero_banner.png'); /* Sesuaikan gambarnya */
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0,0,0,0.4); /* Overlay seperti hero-home */
+        border-radius: inherit;
+    }
+
+    .hero h1,
+    .hero p {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Supaya text tidak terlalu besar */
+    .hero h1 {
+        font-size: 2rem;
+    }
     </style>
 </head>
 <body>
@@ -21,8 +56,8 @@
     <div class="logo">Web GIS</div>
     <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="data.html">Data Penelitian</a></li>
         <li><a class="active" href="peta.html">Tampilan Peta</a></li>
+        <li><a href="data.html">Data Penelitian</a></li>
         <li><a href="about.html">Profile</a></li>
     </ul>
 </nav>
